@@ -1,11 +1,12 @@
 # lib/cli.py
+import click
 
 from helpers import (
     exit_program,
     helper_1
 )
 
-
+@click.command()
 def main():
     while True:
         menu()
@@ -15,13 +16,19 @@ def main():
         elif choice == "1":
             helper_1()
         else:
-            print("Invalid choice")
+            click.echo("Invalid choice")
 
 
 def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. Some useful function")
+    click.echo("Please select an option:")
+    click.echo("0. Exit the program")
+    click.echo("1. Some useful function")
+
+
+@click.command()
+@click.option("--name", prompt="Enter your name ", help="The name of the user")
+def hello(name):
+    click.echo(f"Hello {name}!")
 
 
 if __name__ == "__main__":
