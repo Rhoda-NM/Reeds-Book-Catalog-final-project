@@ -53,3 +53,61 @@ class Lending:
         lent_book = cls(book, date, borrower)
         lent_book.save()
         return lent_book
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return a book object having the attribute values from the table row."""
+
+        # Check the dictionary for an existing instance using the row's primary key
+        borrowed_book = cls.all.get(row[0])
+        if borrowed_book:
+            # ensure attributes match row values in case local instance was modified
+            borrowed_book.title = row[1]
+            borrowed_book.lending_date = row[2]
+            borrowed_book.borrower_name = row[3]
+            
+        else:
+            # not in dictionary, create new instance and add to dictionary
+            borrowed_book = cls(row[1], row[2], row[3])
+            borrowed_book.id = row[0]
+            cls.all[borrowed_book.id] = borrowed_book
+        return borrowed_book
+    
+    @classmethod
+    def find_by_title(cls, title):
+        """Returns Lending object corresponding to first table row matching given title"""
+        sql = """
+            SELECT *
+            FROM lendings
+            WHERE title is ?
+        """
+        row = CURSOR.execute(sql, (title, )).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    @classmethod
+    def borrowed_books(cls):
+        """Return a list containing a Lending object per row in the table"""
+        sql = """
+            SELECT *
+            FROM lendings
+        """
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
+
+    def return_book(self):
+        """Delete the table row corresponding to the current lent book instance,
+        delete the dictionary entry, and reassign id attribute"""
+
+        sql = """
+            DELETE FROM lendings
+            WHERE id = ?
+        """
+
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+
+        # Delete the dictionary entry using id as the key
+        del type(self).all[self.id]
+
+        # Set the id to None
+        self.id = None

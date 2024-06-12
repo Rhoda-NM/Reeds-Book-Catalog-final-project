@@ -34,7 +34,7 @@ def books_by_author():
 
 def book_by_title():
     book_title = input("Enter book title: ")
-    Book.find_by_title(book_by_title)
+    Book.find_by_title(book_title)
 
 def authors_by_genre():
     genre_name  = input("Enter genre: ")
@@ -54,3 +54,16 @@ def add_boook():
         print(f"{book} added successfully")
     except Exception as exc:
         print("Error occurred: ", exc)
+
+def borrowed_books():
+    books = Lending.borrowed_books()
+    for book in books:
+        print(book)
+        
+def lend_book():
+    pass
+
+def return_book():
+    book = input("Book to return: ")
+    returned_book = Lending.find_by_title(book)
+    Lending.return_book(returned_book)

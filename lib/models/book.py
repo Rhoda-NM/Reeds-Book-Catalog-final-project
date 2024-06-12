@@ -1,19 +1,22 @@
 # lib/models/book.py
 from models.__init__ import CURSOR, CONN
+from models.author import Author
+from models.genre import Genre
 
 class Book:
 
     all={}
 
-    def __init__(self, title, author, genre, publication_yr, status= "Unread"):
+    def __init__(self, title, author_id,author_name, genre_id, genre_name, publication_yr, status= "Unread"):
         self.title = title
-        self.author = author
-        self.genre = genre
+        self.author_id = author_id
+        self.genre_id = genre_id
+        self.genre_name = genre_name
         self.publication_yr = publication_yr
         self.reading_status = status
 
     def __repr__(self):
-        return f"<Book {self.id}: {self.title}: {self.author}: {self.genre}: {self.publication_yr}>"
+        return f"<Book {self.id}: {self.title}: {self.author_name}: {self.genre_name}: {self.publication_yr}>"
     
     @classmethod
     def create_table(cls):
@@ -23,7 +26,9 @@ class Book:
                 id INTEGER PRIMARY KEY,
                 title TEXT,
                 author_id INTEGER,
-                genre_id INTEGER
+                author_name TEXT,
+                genre_id INTEGER,
+                genre_name TEXT,
                 publication_yr DATE,
                 reading_status TEXT,
                 FOREIGN KEY (author_id) REFERENCES author(id),
@@ -46,17 +51,29 @@ class Book:
         Update object id attributwe using the primary key value of the new row
         Save the book in a local dictionary using PK as the dictionary key"""
         sql = """
-            INSERT INTO books (title, author_id, genre_id, publication_yr, reading_status)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO books (title, author_id, author_name, genre_id, genre_name, publication_yr, reading_status)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """
-        CURSOR.execute(sql, (self.title, self.author.id, self.genre.id, self.publication_yr, self.reading_status))
+        CURSOR.execute(sql, (self.title, self.author_id, self.author_name, self.genre_id, self.genre_name, self.publication_yr, self.reading_status))
         CONN.commit()
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
     @classmethod
-    def create(cls, title, author, genre, publication_yr, reading_status):
-        book = cls(title, author, genre, publication_yr, reading_status)
+    def create(cls, title, author_name, genre_name, publication_yr, reading_status):
+        author = Author.find_by_name(author_name)
+        if not author:
+            author = Author.create(author_name)
+            if not author:
+                raise Exception("Failed to create author")
+    
+        # Find or create genre
+        genre = Genre.find_by_name(genre_name)
+        if not genre:
+            genre = Genre.create(genre_name)
+            if not genre:
+                raise Exception("Failed to create genre")
+        book = cls(title, author.id, author_name,  genre.id, genre_name, publication_yr, reading_status)
         book.save()
         return book
     
@@ -69,14 +86,14 @@ class Book:
         if book:
             # ensure attributes match row values in case local instance was modified
             book.title = row[1]
-            book.author = row[2]
-            book.genre = row[3]
-            book.publication_yr = row[4]
-            book.reading_status = row[5]
+            book.author_name = row[3]
+            book.genre_name = row[5]
+            book.publication_yr = row[6]
+            book.reading_status = row[7]
             
         else:
             # not in dictionary, create new instance and add to dictionary
-            book = cls(row[1], row[2], row[3], row[4], row[5])
+            book = cls(row[1], row[3], row[5], row[6], row[7])
             book.id = row[0]
             cls.all[book.id] = book
         return book
@@ -102,3 +119,21 @@ class Book:
         """
         row = CURSOR.execute(sql, (title, )).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    def delete(self):
+        """Delete the table row corresponding to the current Employee instance,
+        delete the dictionary entry, and reassign id attribute"""
+
+        sql = """
+            DELETE FROM employees
+            WHERE id = ?
+        """
+
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+
+        # Delete the dictionary entry using id as the key
+        del type(self).all[self.id]
+
+        # Set the id to None
+        self.id = None
