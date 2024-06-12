@@ -101,3 +101,10 @@ class Author:
         """
         row = CURSOR.execute(sql, (name, )).fetchone()
         return cls.author_instance(row) if row else None
+    
+    def books(self):
+        """Return books by the author"""
+        author = self._id
+        from models.book import Book
+        self._books = [book for book in Book.all if book.author == author]
+        return self._books

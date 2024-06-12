@@ -1,7 +1,7 @@
 # lib/models/book.py
 from models.__init__ import CURSOR, CONN
 
-class Boook:
+class Book:
 
     all={}
 
@@ -55,7 +55,50 @@ class Boook:
         type(self).all[self.id] = self
 
     @classmethod
-    def create(cls, title, author, genre, publication_yr, reading_status)
+    def create(cls, title, author, genre, publication_yr, reading_status):
         book = cls(title, author, genre, publication_yr, reading_status)
         book.save()
         return book
+    
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return a book object having the attribute values from the table row."""
+
+        # Check the dictionary for an existing instance using the row's primary key
+        book = cls.all.get(row[0])
+        if book:
+            # ensure attributes match row values in case local instance was modified
+            book.title = row[1]
+            book.author = row[2]
+            book.genre = row[3]
+            book.publication_yr = row[4]
+            book.reading_status = row[5]
+            
+        else:
+            # not in dictionary, create new instance and add to dictionary
+            book = cls(row[1], row[2], row[3], row[4], row[5])
+            book.id = row[0]
+            cls.all[book.id] = book
+        return book
+
+    @classmethod
+    def get_all(cls):
+        """Return a list containing a Book object per row in the table"""
+        sql = """
+            SELECT *
+            FROM books
+        """
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
+    
+    @classmethod
+    def find_by_title(cls, title):
+        """Returns Book object corresponding to first table row matching given title"""
+        sql = """
+            SELECT *
+            FROM books
+            WHERE title is ?
+        """
+        row = CURSOR.execute(sql, (title, )).fetchone()
+        return cls.instance_from_db(row) if row else None

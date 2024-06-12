@@ -11,7 +11,7 @@ def main():
     while True:
         menu()
         choice = input("> ")
-        if choice == "0":
+        if choice == "00":
             exit_program()
         elif choice == "1":
             helper_1()
@@ -20,8 +20,9 @@ def main():
 
 
 def menu():
-    click.echo("Please select an option:")
-    click.echo("0. Exit the program")
+    click.echo("Browse Catalog:")
+    click.echo("00. Exit the catalog")
+    click.echo("0. Back>>")
     click.echo("1. Some useful function")
 
 

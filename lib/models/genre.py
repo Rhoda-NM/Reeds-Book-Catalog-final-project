@@ -5,13 +5,13 @@ class Genre:
 
     all={}
 
-    def __init__(self, name, category):
+    def __init__(self, name):
         self._id = None
         self.name = name
-        self.category = category
+        self._books = []
 
     def __repr__(self):
-        return f"<Genre: {self.id}: {self.name}: {self.category}>"
+        return f"<Genre: {self.id}: {self.name}>"
     
     @classmethod
     def create_table(cls):
@@ -19,8 +19,7 @@ class Genre:
         sql = """
             CREATE TABLE IF NOT EXISTS genres(
                 id INTEGER PRIMARY KEY,
-                name TEXT,
-                category TEXT)
+                name TEXT)
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -36,18 +35,18 @@ class Genre:
     def save(self):
         """Insert a new row with the name values of the current genre instance. Update object id attribute with the primary key value of the new row"""
         sql = """
-            INSERT INTO genres(name, cattegory)
-            VALUES (?, ?)
+            INSERT INTO genres(name)
+            VALUES (?)
         """
-        CURSOR.execute(sql, (self.name, self.category))
+        CURSOR.execute(sql, (self.name,))
         CONN.commit()
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
     @classmethod
-    def create(cls, name, category):
+    def create(cls, name):
         """Initialize a new Genre instance and save the object to the database"""
-        genre = cls(name, category)
+        genre = cls(name)
         genre.save()
         return genre
     @classmethod
@@ -64,6 +63,16 @@ class Genre:
         return genre
     
     @classmethod
+    def get_all(cls):
+        """Return a list containing a Genre object per row in the table"""
+        sql = """
+            SELECT *
+            FROM genres
+        """
+        rows = CURSOR.execute(sql).fetchall()
+        return [cls.genre_instance(row) for row in rows]
+    
+    @classmethod
     def find_by_name(cls, name):
         """Returns Genre object corresponding to first table row matching given name"""
         sql = """
@@ -74,18 +83,21 @@ class Genre:
         row = CURSOR.execute(sql, (name, )).fetchone()
         return cls.genre_instance(row) if row else None
     
-    @classmethod
-    def find_by_category(cls, category):
-        """Returns Genre objects corresponding to table rows matching given category"""
-        sql = """
-            SELECT *
-            FROM genres
-            WHERE category is ?
-        """
-        rows = CURSOR.execute(sql, (category, )).fetchall()
-        if rows:
-            return [cls.genre_instance(row) for row in rows]
-        else:
-            return None
+    def books(self):
+        """Return books in the given genre"""
+        genre = self.name
+        from models.book import Book
+        self._books = [book for book in Book.all if book.genre == genre]
+        return self._books
+
+    def authors(self):
+        """Return authors in a certain genre"""
+        from models.author import Author
+        genre_authors  = []
+        for book in self.books():
+            if book.author not in genre_authors:
+                genre_authors.append(book.author)
+        return [Author.author_instance(author) for author in genre_authors]
+            
 
     
