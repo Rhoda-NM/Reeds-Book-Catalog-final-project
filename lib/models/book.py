@@ -121,11 +121,11 @@ class Book:
         return cls.instance_from_db(row) if row else None
     
     def delete(self):
-        """Delete the table row corresponding to the current Employee instance,
+        """Delete the table row corresponding to the current Book instance,
         delete the dictionary entry, and reassign id attribute"""
 
         sql = """
-            DELETE FROM employees
+            DELETE FROM books
             WHERE id = ?
         """
 

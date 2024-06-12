@@ -59,11 +59,29 @@ def borrowed_books():
     books = Lending.borrowed_books()
     for book in books:
         print(book)
-        
+
 def lend_book():
-    pass
+    book_title = input("Book title: ")
+    book = Book.find_by_title(book_title)
+    if book:
+        date = input("Enter date: ")
+        name = input("Enter borrower's name: ")
+        lent_book = Lending.create(book_title, date, name)
+        print(f"{lent_book} book lent out")
+    else:
+        print("Book not found in catalog")
+
 
 def return_book():
     book = input("Book to return: ")
     returned_book = Lending.find_by_title(book)
     Lending.return_book(returned_book)
+
+def delete_book():
+    book_title = input("Book to remove from catalog: ")
+    book = Book.find_by_title(book_title)
+    if book:
+        Book.delete(book)
+        print(f"{book_title} deleted from catalog")
+    else:
+        print("book not in catalog")
