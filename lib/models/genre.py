@@ -24,6 +24,7 @@ class Genre:
         CURSOR.execute(sql)
         CONN.commit()
 
+    @classmethod
     def drop_table(cls):
         """Drop the table that persists Genre instances"""
         sql = """
