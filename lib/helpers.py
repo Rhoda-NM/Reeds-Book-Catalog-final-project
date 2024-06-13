@@ -37,7 +37,7 @@ def list_authors():
         click.secho("No authors available.", fg='red')
 
 def books_by_genre():
-    genre_name = input("Enter genre: ")
+    genre_name = get_input("Enter genre: ", validate_non_empty)
     genre = Genre.find_by_name(genre_name)
     if genre:
         click.echo(genre)
@@ -46,12 +46,12 @@ def books_by_genre():
             for book in books:
                 print_book(book)
         else:
-            click.secho("No books found in this genre.", fg='red')
+            click.secho(f"No books found in the genre {genre_name}", fg='red')
     else:
-        click.secho("Genre not found.", fg='red')
+        click.secho(f"{genre_name} genre not found.", fg='red')
 
 def books_by_author():
-    author_name = input("Enter Author's name: ")
+    author_name = get_input("Enter Author's name: ", validate_non_empty)
     author = Author.find_by_name(author_name)
     if author:
         click.echo(author)
@@ -60,21 +60,21 @@ def books_by_author():
             for book in books:
                 print_book(book)
         else:
-            click.secho("No books found by this author.", fg='red')
+            click.secho(F"No books found by this author: {author_name}", fg='red')
     else:
-        click.secho("Author not found.", fg='red')
+        click.secho(f"No author by the name {author_name} in the catalog", fg='red')
 
 def book_by_title():
-    book_title = input("Enter book title: ")
+    book_title = get_input("Enter book title: ", validate_non_empty)
     book = Book.find_by_title(book_title)
     if book:
         click.secho("Retrieving book:", fg='green', bold=True)
         print_book(book)
     else:
-        click.secho("Book not found.", fg='red')
+        click.secho(f"No book found by this name {book_title}", fg='red')
 
 def authors_by_genre():
-    genre_name  = input("Enter genre: ")
+    genre_name  = get_input("Enter genre: ", validate_non_empty)
     genre = Genre.find_by_name(genre_name)
     if genre:
         authors = Genre.authors(genre)
@@ -82,16 +82,16 @@ def authors_by_genre():
             for author in authors:
                 print_author(author)
         else:
-            click.secho("No authors found in this genre.", fg='red')
+            click.secho(f"No authors found in the genre {genre_name}", fg='red')
     else:
         click.secho("Genre not found.", fg='red')
 
 def add_book():
-    title = input("Book title: ")
-    author = input("Author's name")
-    genre = input("Genre: ")
-    publication_yr = input("Year of publication: ")
-    reading_status = input("Reading status: ")
+    title = get_input("Book title: ", validate_non_empty)
+    author = get_input("Author's name: ", validate_non_empty)
+    genre = get_input("Genre: ", validate_non_empty)
+    publication_yr = get_input("Year of publication: ", validate_year)
+    reading_status = get_input("Reading status: ", validate_non_empty)
     try:
         book = Book.create(title, author, genre, publication_yr, reading_status)
         click.secho(f"{book.title} added successfully", fg='green', bold=True)
@@ -108,11 +108,11 @@ def borrowed_books():
         click.secho("No Books Lent out.", fg='red')
 
 def lend_book():
-    book_title = input("Book title: ")
+    book_title = get_input("Book title: ", validate_non_empty)
     book = Book.find_by_title(book_title)
     if book:
-        date = input("Enter date: ")
-        name = input("Enter borrower's name: ")
+        date = get_input("Enter date: ", validate_non_empty)
+        name = get_input("Enter borrower's name: ", validate_non_empty)
         lent_book = Lending.create(book_title, date, name)
         click.secho(f"{lent_book} book lent out", fg='green', bold=True)
     else:
@@ -120,7 +120,7 @@ def lend_book():
 
 
 def return_book():
-    book = input("Book to return: ")
+    book = get_input("Book to return: ", validate_non_empty)
     returned_book = Lending.find_by_title(book)
     if returned_book:
         Lending.return_book(returned_book)
@@ -152,3 +152,23 @@ def print_author(author):
 def print_genre(genre):
     click.secho(f"Genre: {genre.name}", fg='magenta', bold=True)
     click.echo("-" * 20)
+
+def get_input(prompt, validator=None):
+    while True:
+        value = input(prompt)
+        if validator:
+            try:
+                validator(value)
+                return value
+            except ValueError as e:
+                click.secho(str(e), fg='red')
+        else:
+            return value
+
+def validate_year(value):
+    if not value.isdigit() or not (1000 <= int(value) <= 9999):
+        raise ValueError("Please enter a valid year (e.g., 2022).")
+
+def validate_non_empty(value):
+    if not value.strip():
+        raise ValueError("This field cannot be empty.")
