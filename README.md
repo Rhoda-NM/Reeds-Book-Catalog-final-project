@@ -55,7 +55,7 @@ Once running the CLI application presents a menu with different navigation optio
     11. Return Borrowed Book: Record a book when it's returned
     12. Delete a Book From Catalog: Remove a book from one's catalog
 
-    ### CLI working
+   ### CLI working
     Viewing books:
     ![Screenshot from 2024-06-13 14-02-45](https://github.com/Rhoda-NM/Reeds-Book-Catalog-final-project/assets/56297292/dc1a4b09-dd27-4e85-b268-57cd4b9df45f)
     Adding books:
