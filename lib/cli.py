@@ -87,11 +87,12 @@ def menu():
 
 @click.command()
 @click.option("--name", prompt="Enter your name ", help="The name of the user")
-def hello(name):
+def greet_user(name):
+    """Say hello to the user"""
     click.echo(Fore.CYAN +  f"Hello {name}!")
 
 main.add_command(browse_catalog)
-main.add_command(hello)
+main.add_command(greet_user)
 
 if __name__ == "__main__":
     main()
