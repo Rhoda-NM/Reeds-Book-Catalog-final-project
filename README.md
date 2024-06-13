@@ -56,9 +56,9 @@ Once running the CLI application presents a menu with different navigation optio
     12. Delete a Book From Catalog: Remove a book from one's catalog
 
    ### CLI working
-    Viewing books:
+   Viewing books:
     ![Screenshot from 2024-06-13 14-02-45](https://github.com/Rhoda-NM/Reeds-Book-Catalog-final-project/assets/56297292/dc1a4b09-dd27-4e85-b268-57cd4b9df45f)
-    Adding books:
+   Adding books:
     ![Screenshot from 2024-06-13 14-02-45](https://github.com/Rhoda-NM/Reeds-Book-Catalog-final-project/assets/56297292/5d8a0ee0-e8c6-42d6-bd3b-906e8a5673e4)
 
 
