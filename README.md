@@ -92,29 +92,6 @@ The main entry point of the application is cli.py. It contains commands and func
  Manages lending information, including borrower details, lending dates, and return dates. Provides methods for creating lending instances, retrieving borrowed books, and handling lending data in the database.
 
 
-Absolutely, here's an updated README with detailed descriptions for each Python file, function, and model in your CLI application:
-
-Reeds Book Catalog CLI
-Welcome to Reeds Book Catalog CLI! This command-line interface (CLI) application allows you to manage a catalog of books, authors, genres, and lending information easily and efficiently.
-
-CLI Script
-The main entry point of the application is cli.py. It contains commands and functionality to interact with the book catalog, manage lending, and perform various operations related to books, authors, and genres.
-
-Features
-Browse Catalog: View and manage the catalog
-Add a Book to Catalog: Add a new book to the catalog
-Browse Genres: View and manage genres
-View Authors: View and manage authors
-Search Book: Search for a book by title
-Search Books by Author: Search for books by author
-Search Books by Genre: Search for books by genre
-Lend a Book to a Friend: Lend a book to someone
-View borrowed Books From Catalog: View books that are currently borrowed
-Return Borrowed Book: Return a borrowed book
-Mark a Book as Read: Mark a book as read in your personal library
-Mark a Book as Unread: Mark a book as unread in your personal library
-Installation
-To install and run the CLI application, follow the instructions in the Installation section of this README.
 
 ### Functions
 - list_books()
