@@ -92,6 +92,16 @@ class Author:
         return author
     
     @classmethod
+    def get_all(cls):
+        """Return a list containing a Author object per row in the table"""
+        sql = """
+            SELECT *
+            FROM authors
+        """
+        rows = CURSOR.execute(sql).fetchall()
+        return [cls.author_instance(row) for row in rows]
+    
+    @classmethod
     def find_by_name(cls, name):
         """Returns Author object corresponding to first ttable row matching given name"""
         sql = """
@@ -104,7 +114,15 @@ class Author:
     
     def books(self):
         """Return books by the author"""
-        author = self._id
+        author = self.name
         from models.book import Book
-        self._books = [book for book in Book.all if book.author == author]
-        return self._books
+        sql = """
+            SELECT * FROM books
+            WHERE author_name = ?
+        """
+        CURSOR.execute(sql, (author,))
+
+        rows = CURSOR.fetchall()
+        return [
+            Book.instance_from_db(row) for row in rows
+        ]

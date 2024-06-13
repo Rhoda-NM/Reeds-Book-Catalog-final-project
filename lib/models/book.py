@@ -10,6 +10,7 @@ class Book:
     def __init__(self, title, author_id,author_name, genre_id, genre_name, publication_yr, status= "Unread"):
         self.title = title
         self.author_id = author_id
+        self.author_name = author_name
         self.genre_id = genre_id
         self.genre_name = genre_name
         self.publication_yr = publication_yr
@@ -84,16 +85,15 @@ class Book:
         # Check the dictionary for an existing instance using the row's primary key
         book = cls.all.get(row[0])
         if book:
-            # ensure attributes match row values in case local instance was modified
             book.title = row[1]
+            book.author_id = row[2]
             book.author_name = row[3]
+            book.genre_id = row[4]
             book.genre_name = row[5]
             book.publication_yr = row[6]
             book.reading_status = row[7]
-            
         else:
-            # not in dictionary, create new instance and add to dictionary
-            book = cls(row[1], row[3], row[5], row[6], row[7])
+            book = cls(row[1], row[2], row[3], row[4], row[5], row[6], row[7])
             book.id = row[0]
             cls.all[book.id] = book
         return book
@@ -102,8 +102,7 @@ class Book:
     def get_all(cls):
         """Return a list containing a Book object per row in the table"""
         sql = """
-            SELECT *
-            FROM books
+            SELECT * FROM books
         """
         rows = CURSOR.execute(sql).fetchall()
 

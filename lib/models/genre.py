@@ -88,17 +88,26 @@ class Genre:
         """Return books in the given genre"""
         genre = self.name
         from models.book import Book
-        self._books = [book for book in Book.all if book.genre == genre]
-        return self._books
+        sql = """
+            SELECT * FROM books
+            WHERE genre_name = ?
+        """
+
+        rows = CURSOR.execute(sql, (genre,)).fetchall()
+        return [
+            Book.instance_from_db(row) for row in rows
+        ]
 
     def authors(self):
         """Return authors in a certain genre"""
         from models.author import Author
         genre_authors  = []
         for book in self.books():
-            if book.author not in genre_authors:
-                genre_authors.append(book.author)
-        return [Author.author_instance(author) for author in genre_authors]
+            if book.author_name not in genre_authors:
+                genre_authors.append(book.author_name)
+        
+        authors = [Author.find_by_name(name) for name in genre_authors]
+        return authors
             
 
     
