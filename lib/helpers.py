@@ -13,10 +13,10 @@ def list_books():
     books = Book.get_all()
     if books:
         click.echo("retrieving books")
+        for book in books:
+            print_book(book)
     else:
-        print("no books")
-    for book in books:
-        print_book(book)
+        click.secho("No books available.", fg='red')      
 
 def list_genres():
     genres = Genre.get_all()
@@ -103,9 +103,9 @@ def borrowed_books():
     if books:
         click.secho("Borrowed books:", fg='green', bold=True)
         for book in books:
-            print_book(book)
+            click.secho(f"{book}", fg='cyan', bg='white', bold=True)
     else:
-        click.secho("No borrowed books.", fg='red')
+        click.secho("No Books Lent out.", fg='red')
 
 def lend_book():
     book_title = input("Book title: ")
@@ -122,16 +122,20 @@ def lend_book():
 def return_book():
     book = input("Book to return: ")
     returned_book = Lending.find_by_title(book)
-    Lending.return_book(returned_book)
+    if returned_book:
+        Lending.return_book(returned_book)
+        click.secho(f"{book} returned successfully", fg='green', bold=True)
+    else:
+        click.secho("Book not found in catalog", fg='red')
 
 def delete_book():
     book_title = input("Book to remove from catalog: ")
     book = Book.find_by_title(book_title)
     if book:
         Book.delete(book)
-        print(f"{book_title} deleted from catalog")
+        click.secho(f"{book_title} deleted from catalog", fg='green', bold=True)
     else:
-        print("book not in catalog")
+        click.secho("Book not in catalog", fg='red')
 
 def print_book(book):
     click.secho(f"Title: {book.title}", fg='green', bold=True)

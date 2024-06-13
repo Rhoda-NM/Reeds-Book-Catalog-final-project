@@ -78,7 +78,7 @@ class Lending:
         sql = """
             SELECT *
             FROM lendings
-            WHERE title is ?
+            WHERE book = ?
         """
         row = CURSOR.execute(sql, (title, )).fetchone()
         return cls.instance_from_db(row) if row else None

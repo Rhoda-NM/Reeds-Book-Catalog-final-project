@@ -1,5 +1,6 @@
 # lib/cli.py
 import click
+from colorama import Fore, Back, Style, init
 
 from helpers import (
     exit_program,
@@ -16,6 +17,10 @@ from helpers import (
     return_book,
     delete_book
 )
+
+# Initialize Colorama
+init(autoreset=True)
+
 @click.group()
 def main():
     """Library Catalog CLI"""
@@ -30,7 +35,7 @@ def browse_catalog():
         if choice == "00":
             exit_program()
         elif choice == "0":
-            click.echo("Back to main menu")
+            click.echo(Fore.YELLOW + "Back to main menu") 
             break
         elif choice == "1":
             list_books()
@@ -54,32 +59,36 @@ def browse_catalog():
             borrowed_books()
         elif choice == "11":
             return_book()
+        elif choice == "12":
+            delete_book()
+        
         else:
-            click.echo("Invalid choice")
+            click.echo(Fore.RED + "Invalid choice")
 
 
 def menu():
-    click.echo("Browse Catalog:")
-    click.echo("00. Exit the catalog")
-    click.echo("0. Back>>")
-    click.echo("1. View books in catalog")
-    click.echo("2. Add a Book to Catalog")
-    click.echo("3. Browse genres")
-    click.echo("4. View Authors")
-    click.echo("5. Search Book by Title")
-    click.echo("6. Search Books by Author ")
-    click.echo("7. Search Books by Genre")
-    click.echo("8. Search Authors in a genre")
-    click.echo("9. Lend a Book to a Friend")
-    click.echo("10. View borrowed Books From Catalog")
-    click.echo("11. Return Borrowed Book")
+    click.echo(Fore.GREEN + "Browse Catalog:")
+    click.echo(Fore.CYAN +  "00. Exit the catalog")
+    click.echo(Fore.CYAN + Back.LIGHTWHITE_EX +  "0. Back>>")
+    click.echo(Fore.CYAN +  "1. View books in catalog")
+    click.echo(Fore.CYAN +  "2. Add a Book to Catalog")
+    click.echo(Fore.CYAN +  "3. Browse genres")
+    click.echo(Fore.CYAN + "4. View Authors")
+    click.echo(Fore.CYAN + "5. Search Book by Title")
+    click.echo(Fore.CYAN + "6. Search Books by Author ")
+    click.echo(Fore.CYAN + "7. Search Books by Genre")
+    click.echo(Fore.CYAN + "8. Search Authors in a genre")
+    click.echo(Fore.CYAN + "9. Lend a Book to a Friend")
+    click.echo(Fore.CYAN + "10. View borrowed Books From Catalog")
+    click.echo(Fore.CYAN + "11. Return Borrowed Book")
+    click.echo(Fore.CYAN + "12. Delete a Book From Catalog")
 
 
 
 @click.command()
 @click.option("--name", prompt="Enter your name ", help="The name of the user")
 def hello(name):
-    click.echo(f"Hello {name}!")
+    click.echo(Fore.CYAN +  f"Hello {name}!")
 
 main.add_command(browse_catalog)
 main.add_command(hello)

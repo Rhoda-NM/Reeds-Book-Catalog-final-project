@@ -130,9 +130,41 @@ class Book:
 
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
-
         # Delete the dictionary entry using id as the key
         del type(self).all[self.id]
 
         # Set the id to None
         self.id = None
+        # Check if the author has any other books
+        sql = """
+            SELECT COUNT(*)
+            FROM books
+            WHERE author_id = ?
+        """
+        author_count = CURSOR.execute(sql, (self.author_id,)).fetchone()[0]
+        if author_count == 0:
+            # Delete the author
+            sql = """
+                DELETE FROM authors
+                WHERE id = ?
+            """
+            CURSOR.execute(sql, (self.author_id,))
+            CONN.commit()
+            #del Author.all[self.author_id]
+
+         # Check if the genre has any other books
+        sql = """
+            SELECT COUNT(*)
+            FROM books
+            WHERE genre_id = ?
+        """
+        genre_count = CURSOR.execute(sql, (self.genre_id,)).fetchone()[0]
+        if genre_count == 0:
+            # Delete the genre
+            sql = """
+                DELETE FROM genres
+                WHERE id = ?
+            """
+            CURSOR.execute(sql, (self.genre_id,))
+            CONN.commit()
+            del Genre.all[self.genre_id]
