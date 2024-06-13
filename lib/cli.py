@@ -37,33 +37,68 @@ def browse_catalog():
         if choice == "00":
             exit_program()
         elif choice == "0":
-            click.echo(Fore.YELLOW + "Back to main menu") 
+            click.echo(Fore.YELLOW + "Back to main menu")
             break
         elif choice == "1":
-            list_books()
+            while True:
+                list_books()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         elif choice == "2":
-            add_book()
+            while True:
+                add_book()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         elif choice == "3":
-            list_genres()
+            while True:
+                list_genres()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         elif choice == "4":
-            list_authors()
+            while True:
+                list_authors()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         elif choice == "5":
-            book_by_title()
+            while True:
+                book_by_title()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         elif choice == "6":
-            books_by_author()
+            while True:
+                books_by_author()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         elif choice == "7":
-            books_by_genre()
+            while True:
+                books_by_genre()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         elif choice == "8":
-            authors_by_genre()
+            while True:
+                authors_by_genre()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         elif choice == "9":
-            lend_book()
+            while True:
+                lend_book()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         elif choice == "10":
-            borrowed_books()
+            while True:
+                borrowed_books()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         elif choice == "11":
-            return_book()
+            while True:
+                return_book()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         elif choice == "12":
-            delete_book()
-        
+            while True:
+                delete_book()
+                if input(Fore.CYAN + "Press '0' to go back to menu: ") == '0':
+                    break
         else:
             click.echo(Fore.RED + "Invalid choice")
 
