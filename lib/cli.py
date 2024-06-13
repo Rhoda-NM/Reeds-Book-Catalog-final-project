@@ -1,6 +1,8 @@
+#!/usr/bin/env python
 # lib/cli.py
 import click
 from colorama import Fore, Back, Style, init
+from models.book import Book
 
 from helpers import (
     exit_program,
@@ -91,7 +93,31 @@ def greet_user(name):
     """Say hello to the user"""
     click.echo(Fore.CYAN +  f"Hello {name}!")
 
+@click.command()
+def mark_book_as_read():
+    """Mark a book as read."""
+    book_title = input("Enter the title of the book you want to mark as read: ")
+    book = Book.find_by_title(book_title)
+    if book:
+        book.mark_as_read()
+        click.echo(Fore.GREEN + f"{book.title} has been marked as read.")
+    else:
+        click.echo(Fore.RED +"Book not found.")
+
+@click.command()
+def mark_book_as_unread():
+    """Mark a book as unread."""
+    book_title = input("Enter the title of the book you want to mark as unread: ")
+    book = Book.find_by_title(book_title)
+    if book:
+        book.mark_as_unread()
+        click.echo(Fore.GREEN + f"{book.title} has been marked as unread.")
+    else:
+        click.echo(Fore.RED +"Book not found.")
+
 main.add_command(browse_catalog)
+main.add_command(mark_book_as_read)
+main.add_command(mark_book_as_unread)
 main.add_command(greet_user)
 
 if __name__ == "__main__":

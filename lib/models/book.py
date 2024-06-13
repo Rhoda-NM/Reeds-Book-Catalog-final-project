@@ -78,6 +78,32 @@ class Book:
         book.save()
         return book
     
+    def mark_as_read(self):
+        """Mark the book as read."""
+        new_status = 'read'
+        sql = """
+            UPDATE books
+            SET title = ?, author_id = ?, author_name = ?, genre_id = ?, genre_name = ?,
+                publication_yr = ?, reading_status = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.title, self.author_id, self.author_name, self.genre_id, 
+                            self.genre_name, self.publication_yr, new_status, self.id))
+        CONN.commit()
+
+    def mark_as_unread(self):
+        """Mark the book as unread."""
+        new_status = 'unread'
+        sql = """
+            UPDATE books
+            SET title = ?, author_id = ?, author_name = ?, genre_id = ?, genre_name = ?,
+                publication_yr = ?, reading_status = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.title, self.author_id, self.author_name, self.genre_id, 
+                            self.genre_name, self.publication_yr, new_status, self.id))
+        CONN.commit()
+    
     @classmethod
     def instance_from_db(cls, row):
         """Return a book object having the attribute values from the table row."""
