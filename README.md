@@ -42,18 +42,26 @@ Once running the CLI application presents a menu with different navigation optio
   ### browse-catalog: shows main menu
    
    ### Library Catalog Menu
-    1. View books in catalog: View the books in the database
-    2. Add a Book to Catalog: Add a book to the catalog database
+    1. View books in the catalog: View the books in the database
+    2. Add a Book to the Catalog: Add a book to the catalog database
     3. Browse genres: View the genres in the table genres in the db
     4. View Authors: View the Authors in the table authors in the db
     5. Search Book by Title: Search for a book by its title
-    6. Search Books by Author: Search for books by the author name
+    6. Search Books by Author: Search for books by the author's name
     7. Search Books by Genre: Search for books in a specific genre
-    8. Search Authors in a genre: Search for authors with books in        certain genre
-    9. Lend a Book to a Friend: Take record of a book lent out
+    8. Search Authors in a genre: Search for authors with books in a certain genre
+    9. Lend a Book to a Friend: Take a record of a book lent out
     10. View borrowed Books From Catalog: View the books that user is currently lending out
     11. Return Borrowed Book: Record a book when it's returned
     12. Delete a Book From Catalog: Remove a book from one's catalog
+
+    ### CLI working
+    Viewing books:
+    ![Screenshot from 2024-06-13 14-02-45](https://github.com/Rhoda-NM/Reeds-Book-Catalog-final-project/assets/56297292/dc1a4b09-dd27-4e85-b268-57cd4b9df45f)
+    Adding books:
+    ![Screenshot from 2024-06-13 14-02-45](https://github.com/Rhoda-NM/Reeds-Book-Catalog-final-project/assets/56297292/5d8a0ee0-e8c6-42d6-bd3b-906e8a5673e4)
+
+
 
 
 ## File structure
@@ -68,14 +76,14 @@ The project folder contains:
 └── lib
     ├── models
     │   ├── __init__.py
-    |   ├── author.py - Contains class object Author and its methods and attribute
-    |   ├── book.py - Contains class object Book and its methods and attributes
-    |   ├── genre.py - Contains class object Genre and its methods and attributes
-    │   └── lending.py - Contains class object Lending and its methods and attributes
-    ├── cli.py - Main function for the implementation of the CLI
-    ├── debug.py - Sets up the ipdn
-    └── helpers.py - contains the functions to be executed in the cli
-    ├── seed.py -├── cli.py
+    |   ├── author.py 
+    |   ├── book.py 
+    |   ├── genre.py 
+    │   └── lending.py 
+    ├── cli.py 
+    ├── debug.py 
+    └── helpers.py 
+    ├── seed.py 
 
 ## Models and Fuctions in the CLI
  ### CLI Script
