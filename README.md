@@ -57,9 +57,12 @@ Once running the CLI application presents a menu with different navigation optio
 
    ### CLI working
    Viewing books:
-    ![Screenshot from 2024-06-13 14-02-45](https://github.com/Rhoda-NM/Reeds-Book-Catalog-final-project/assets/56297292/dc1a4b09-dd27-4e85-b268-57cd4b9df45f)
+   
+   ![Screenshot from 2024-06-13 14-02-45](https://github.com/Rhoda-NM/Reeds-Book-Catalog-final-project/assets/56297292/dc1a4b09-dd27-4e85-b268-57cd4b9df45f)
    Adding books:
-    ![Screenshot from 2024-06-13 14-02-45](https://github.com/Rhoda-NM/Reeds-Book-Catalog-final-project/assets/56297292/5d8a0ee0-e8c6-42d6-bd3b-906e8a5673e4)
+
+   ![Screenshot from 2024-06-13 14-03-49](https://github.com/Rhoda-NM/Reeds-Book-Catalog-final-project/assets/56297292/d59d67c8-b56d-4017-aff2-08e37fc6312c)
+
 
 
 
